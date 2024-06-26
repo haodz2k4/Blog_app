@@ -7,11 +7,21 @@ export const typeDeftsPosts = gql`
         status: String,
         category_id: String,
         createdBy: String,
-        deleted: String
+        deleted: Boolean
     }
     type Query {
         posts: [Post]
         post(id: String): Post  
+    }
+    input postInp {
+        title: String,
+        content: String,
+        status: String,
+        category_id: String,
+        createdBy: String,
+    }
+    type Mutation {
+        createPost(post: postInp): Post
     }
 
 
