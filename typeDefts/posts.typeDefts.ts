@@ -22,6 +22,7 @@ export const typeDeftsPosts = gql`
     }
     type Mutation {
         createPost(post: postInp): Post
+        updatePost(post: postInp, id: String): Post
     }
 
 

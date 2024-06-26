@@ -1,7 +1,5 @@
 import Post from '../models/post.model';
-interface Id {
-    id: string
-}
+
 interface Post {
     title: string,
     content: string,
@@ -9,13 +7,14 @@ interface Post {
     category_id: string,
     createdBy: string,
 }
-interface createPostArgs {
+interface postArgs {
+    id: String,
     post: Post
 }
 export const resolversPosts = {
     Query : {
         posts: async () => await Post.find(),
-        post: async (_: unknown, {id}: Id) => {
+        post: async (_: unknown, {id}: postArgs) => {
             const post = await Post.findOne({
                 _id: id
             })
@@ -23,11 +22,21 @@ export const resolversPosts = {
         }   
     },
     Mutation: {
-        createPost: async (_: unknown, args: createPostArgs) =>{
+        createPost: async (_: unknown, args: postArgs) =>{
             const {post} = args;
             const record = new Post(post);
             await record.save();
             return record;
+        },
+        updatePost: async (_: unknown, args: postArgs ) =>{
+            const {post, id} = args;
+
+            await Post.updateOne({
+                _id: id
+            },post)
+
+            return await Post.findById(id);
         }
     }
+    
 }
